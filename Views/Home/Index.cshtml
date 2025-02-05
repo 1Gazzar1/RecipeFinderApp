@@ -1,0 +1,62 @@
+﻿@model CombinedRecipeModel
+
+@{
+    ViewData["Title"] = "Recipe Finder";
+}
+@functions {
+    public string base64img(string base64)
+    {
+        return $"data: image / jpeg; base64,{base64}";
+    }
+}
+
+<div class="text-center">
+    <div class="input-group">
+        <form asp-action="FilterRecipes" method="post">
+            <input type="text" asp-for="RecipeDTO.Name" />
+            <div class="dropdown">
+                <input type="text" asp-for="RecipeDTO.Category" />
+                <input type="text" asp-for="RecipeDTO.Calories" />
+                <input type="text" asp-for="RecipeDTO.Cookingtime" />
+                <input type="text" asp-for="RecipeDTO.SortBy" />
+                <input type="text" asp-for="RecipeDTO.Asc" />
+            </div>
+            <button type="submit">  Submit   </button>
+        </form>
+        
+    </div>
+    
+    <div class="result">
+        <table>   
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Calories</th>
+                    <th>CookingTime</th>
+                    <th>Serving</th>
+                    <th>Category</th>
+                    <th>YoutubeUrl</th>
+                    <th>Ingredients</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var recipe in Model.Recipes)
+                {
+                    <tr>
+                        <td>@recipe.Name</td>
+                        <td>@recipe.Calories</td>
+                        <td>@recipe.Cookingtime</td>
+                        <td>@recipe.Servings</td>
+                        <td>@recipe.Category</td>
+                        <td>@recipe.YoutubeUrl</td>
+                        <td>@recipe.Ingredients</td>
+                        <td><img src="@base64img(@recipe.Image)" /></td>
+                    </tr>                 
+                }
+            </tbody>
+            
+        </table>
+        
+    </div>
+</div>

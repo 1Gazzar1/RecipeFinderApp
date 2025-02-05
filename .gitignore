@@ -1,0 +1,22 @@
+
+/appsettings.json
+
+/appsettings.Development.json
+
+# User-specific folders
+.vscode/
+.vs/
+.vscode/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Builds
+bin/
+obj/
+
+Migrations/

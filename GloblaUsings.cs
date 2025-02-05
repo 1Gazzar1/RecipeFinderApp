@@ -1,0 +1,10 @@
+﻿global using MongoDB.Bson;
+global using MongoDB.Bson.Serialization.Attributes;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.Extensions.Options;
+global using MongoDB.Driver;
+global using RecipeFinderApp.Interfaces;
+global using RecipeFinderApp.Services;
+global using RecipeFinderApp.Models.DTOs;
+global using RecipeFinderApp.Models;
+global using RecipeFinderApp.Data;
