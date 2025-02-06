@@ -7,26 +7,81 @@
     public string base64img(string base64)
     {
         return $"data: image / jpeg; base64,{base64}";
-    }
+    }   
 }
 
 <div class="text-center">
-    <div class="input-group">
+    <div class="form-container">
+
         <form asp-action="FilterRecipes" method="post">
-            <input type="text" asp-for="RecipeDTO.Name" />
-            <div class="dropdown">
-                <input type="text" asp-for="RecipeDTO.Category" />
-                <input type="text" asp-for="RecipeDTO.Calories" />
-                <input type="text" asp-for="RecipeDTO.Cookingtime" />
-                <input type="text" asp-for="RecipeDTO.SortBy" />
-                <input type="text" asp-for="RecipeDTO.Asc" />
+            <div >
+                <label>Name</label> <br />
+                <input style="width: 60% ; height : 50px ;" type="text" asp-for="RecipeDTO.Name" placeholder="Recipe Name" />
             </div>
-            <button type="submit">  Submit   </button>
+
+            <div class="parameters">
+                <div class="input-container">
+                    <label for="Category">Category</label> <br />
+                    <select style="width : 101%;" asp-for="RecipeDTO.Category">
+
+                        <option value="" selected> ----- </option>
+                        <option value="Breakfast"> Breakfast</option>
+                        <option value="Pasta"> Pasta</option>
+                        <option value="Goat"> Goat</option>
+                        <option value="Vegetarian"> Vegetarian</option>
+                        <option value="Starter"> Starter</option>
+                        <option value="Side"> Side</option>
+                        <option value="Lamb"> Lamb</option>
+                        <option value="Chicken"> Chicken</option>
+                        <option value="Miscellaneous"> Miscellaneous</option>
+                        <option value="Vegan"> Vegan</option>
+                        <option value="Seafood"> Seafood</option>
+                        <option value="Dessert"> Dessert</option>
+                        <option value="Pork"> Pork</option>
+
+                    </select>
+                </div>
+                
+                <div class ="input-container">
+                    <label for="Calories">Calories</label> <br />
+                    <input style="width : 101%;" type="number" asp-for="RecipeDTO.Calories" />
+
+                </div>
+                
+
+                <div class="input-container">
+                    <label for="Cookingtime">Cookingtime</label> <br />
+                    <input style="width : 101%;" type="number" asp-for="RecipeDTO.Cookingtime" />
+                </div>
+                
+                <div class="input-container">
+                    <label for="Sort-By">Sort By</label> <br />
+                    <select style="width : 101%;" asp-for="RecipeDTO.SortBy">
+                        <option value="@RecipeSortingOptions.Name" selected> Name </option>
+                        <option value="@RecipeSortingOptions.Calories"> Calories </option>
+                        <option value="@RecipeSortingOptions.Cookingtime"> Cookingtime </option>
+                        <option value="@RecipeSortingOptions.IngredientsCount"> IngredientsCount </option>
+                    </select>
+
+                </div>
+                
+                <div class="input-container">
+                    <label for="Ascending">Ascending</label> <br />
+                    <select style="width : 101%;" asp-for="RecipeDTO.Asc">
+                        <option value="@true" selected> True </option>
+                        <option value="@false"> False </option>
+                    </select>
+
+                </div>
+                
+            </div>
+            <button type="submit">Submit</button>
         </form>
         
     </div>
-    
-    <div class="result">
+    @if (Model.Recipes.Any()){
+        
+        <div class="result">
         <table>   
             <thead>
                 <tr>
@@ -35,6 +90,7 @@
                     <th>CookingTime</th>
                     <th>Serving</th>
                     <th>Category</th>
+                    <th>Instructions</th>
                     <th>YoutubeUrl</th>
                     <th>Ingredients</th>
                     <th>Image</th>
@@ -49,14 +105,24 @@
                         <td>@recipe.Cookingtime</td>
                         <td>@recipe.Servings</td>
                         <td>@recipe.Category</td>
+                        <td>@recipe.Instructions</td>
                         <td>@recipe.YoutubeUrl</td>
-                        <td>@recipe.Ingredients</td>
-                        <td><img src="@base64img(@recipe.Image)" /></td>
+                        <td>
+                            <ol>
+                                @foreach (var ingred in @recipe.Ingredients)
+                                {
+                                    <li>
+                                        @ingred.Quantity - @ingred.Name
+                                    </li>
+                                }
+                            </ol>
+                            
+                        </td>
+                        <td><img class = "Photo" loading="lazy" src="@base64img(@recipe.Image)" /></td>
                     </tr>                 
                 }
-            </tbody>
-            
-        </table>
-        
+            </tbody>           
+        </table> 
     </div>
-</div>
+    }
+</div>  
