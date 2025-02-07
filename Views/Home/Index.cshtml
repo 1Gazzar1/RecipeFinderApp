@@ -2,6 +2,16 @@
 
 @{
     ViewData["Title"] = "Recipe Finder";
+    if (Model.Recipes is null){
+        Model.Recipes = new List<Recipe>();
+    }
+    if (Model.RecipeDTO is null)
+    {
+        Model.RecipeDTO = new RecipeDTO();
+    }
+    if (Model.RecipeDTO.Ingredients is null){
+        Model.RecipeDTO.Ingredients = new List<string>();
+    }
 }
 @functions {
     public string base64img(string base64)
@@ -10,15 +20,41 @@
     }   
 }
 
-<div class="text-center">
+
     <div class="form-container">
 
         <form asp-action="FilterRecipes" method="post">
             <div >
                 <label>Name</label> <br />
-                <input style="width: 60% ; height : 50px ;" type="text" asp-for="RecipeDTO.Name" placeholder="Recipe Name" />
+                <input style="width: 60% ; height : 50px ;border-radius: 15px 0px 15px 0px;" type="text" asp-for="RecipeDTO.Name" placeholder="Recipe Name" />
+            </div>
+            
+            <div class="Ingredients-section">
+                <div class="ingredient-input">
+
+                    <input style="border-radius: 15px 0px 0px 0px;" placeholder="Add Ingredient ..." type="text" asp-for="Ingredient" />
+                    <button style="border-radius: 0px 0px 15px 0px;" type="submit" asp-action="AddIngredients">
+                        Add +
+                    </button>
+
+                </div>
+                <div class="ingredient-items">
+                    <h4 style="text-align : left; margin-left : 7% ; ">Ingredients : </h4>
+                    <ol style="display : flex ;flex-direction : row ;justify-content : space-evenly;">
+                        @for (int i = 0; i < Model.RecipeDTO.Ingredients.Count; i++)
+                        {
+                            <li>@Model.RecipeDTO.Ingredients[i]</li>
+                            <input type="hidden" name="RecipeDTO.Ingredients[@i]" value="@Model.RecipeDTO.Ingredients[i]" />
+                            
+                        }
+                    </ol>
+                    
+
+                </div>    
+                
             </div>
 
+            
             <div class="parameters">
                 <div class="input-container">
                     <label for="Category">Category</label> <br />
@@ -81,7 +117,7 @@
     </div>
     @if (Model.Recipes.Any()){
         
-        <div class="result">
+    <div class="result">
         <table>   
             <thead>
                 <tr>
@@ -90,8 +126,8 @@
                     <th>CookingTime</th>
                     <th>Serving</th>
                     <th>Category</th>
-                    <th>Instructions</th>
                     <th>YoutubeUrl</th>
+                    <th>Instructions</th>                    
                     <th>Ingredients</th>
                     <th>Image</th>
                 </tr>
@@ -105,18 +141,24 @@
                         <td>@recipe.Cookingtime</td>
                         <td>@recipe.Servings</td>
                         <td>@recipe.Category</td>
-                        <td>@recipe.Instructions</td>
-                        <td>@recipe.YoutubeUrl</td>
+                        <td><a target="_blank" href="@recipe.YoutubeUrl">YoutubeLink</a></td>
                         <td>
-                            <ol>
-                                @foreach (var ingred in @recipe.Ingredients)
-                                {
-                                    <li>
-                                        @ingred.Quantity - @ingred.Name
-                                    </li>
-                                }
-                            </ol>
-                            
+                            <div class="scrollable">
+                                @recipe.Instructions
+                        
+                            </div>
+                        </td>
+                        <td class="scrollable">
+                            <div>
+                                <ol>
+                                    @foreach (var ingred in @recipe.Ingredients)
+                                    {
+                                        <li style="margin-left : 5px ;">
+                                            <b>@ingred.Quantity - @ingred.Name</b>
+                                        </li>
+                                    }
+                                </ol>
+                            </div>                       
                         </td>
                         <td><img class = "Photo" loading="lazy" src="@base64img(@recipe.Image)" /></td>
                     </tr>                 
@@ -125,4 +167,3 @@
         </table> 
     </div>
     }
-</div>  

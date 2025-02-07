@@ -1,3 +1,5 @@
+using System.Reflection.Metadata;
+
 namespace RecipeFinderApp.Controllers
 {
 	public class HomeController : Controller
@@ -10,6 +12,7 @@ namespace RecipeFinderApp.Controllers
 
 		// the api requests 
 
+		/*
 		[HttpGet]
 		public async Task<IActionResult> GetAllRecipe()
 		{
@@ -60,6 +63,7 @@ namespace RecipeFinderApp.Controllers
 			await _recipeService.DeleteRecipe(objectId);
 			return NoContent();
 		}
+		*/
 		[HttpPost("Filter&Sort")]
 		public async Task<IActionResult> FilterRecipes(CombinedRecipeModel ViewModel)
 		{
@@ -74,8 +78,32 @@ namespace RecipeFinderApp.Controllers
 
 			return View("Index", ViewModel);
 		}
+		[HttpPost("Ingredient")]
+		public  IActionResult AddIngredients(CombinedRecipeModel ViewModel)
+		{
+			if (ViewModel.RecipeDTO is null || ViewModel.RecipeDTO.Ingredients is null)
+			{
+				ViewModel.RecipeDTO = new RecipeDTO();
+				ViewModel.RecipeDTO.Ingredients = [];
+			}
+			var ing = ViewModel.Ingredient ?? "";
+			ViewModel.RecipeDTO.Ingredients.Add(ing);
+			
+			return View("Index", ViewModel);
+			
+		}
+		public IActionResult DeleteIngredients(CombinedRecipeModel ViewModel)
+		{
+			if (ViewModel.RecipeDTO is null || ViewModel.RecipeDTO.Ingredients is null)
+			{
+				ViewModel.RecipeDTO = new RecipeDTO();
+				ViewModel.RecipeDTO.Ingredients = [];
+			}
 
-		
+			return View("Index",ViewModel);
+		}
+
+
 		// view methods 
 
 		public IActionResult Index()
@@ -85,6 +113,9 @@ namespace RecipeFinderApp.Controllers
 			{
 				Recipes = [],
 				RecipeDTO = new RecipeDTO()
+				{
+					Ingredients = []	
+				}
 			};
 		
             return View(combinedRecipeModel);

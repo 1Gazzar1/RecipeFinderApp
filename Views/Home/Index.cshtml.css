@@ -8,6 +8,7 @@
     font-size: 22px;
     background: linear-gradient( 90deg, rgb(128, 128, 128, 0.45), rgb(128, 128, 128, 0.75));
     border-radius: 50px 0px;
+    text-align : center ; 
    
 }
 .parameters {
@@ -22,7 +23,9 @@
     border: 1px dashed black;
     height: 50px;
     width: 15%;
-    background: rgb(255, 255, 255, 0.50)
+    background: rgb(255, 255, 255, 0.50) ;
+    border-radius: 15px 15px 0px 0px;
+    
 }
 
 .form-container button {
@@ -31,4 +34,29 @@
     
     border : 2px thick black ; 
     border-radius : 15px 0px;
+}
+.ingredient-input {
+    display : flex ;
+    flex-direction : row ;
+    margin: 30px 0px;
+    margin-left: 7%;
+}
+.scrollable{
+    width: 300px;
+    height: 250px;
+    display: block;
+    overflow: auto;
+}
+.result { 
+    text-align : center ;
+}
+.result table td{
+    min-width : 100px ; 
+    border : 1px solid rgb(18, 56, 20);
+}
+.result table td, .result table th {
+    text-align: center;
+}
+.result table th {
+    font-size : 18px ; 
 }
