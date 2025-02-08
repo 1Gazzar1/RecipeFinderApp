@@ -120,5 +120,5 @@ namespace RecipeFinderApp.Controllers
 		
             return View(combinedRecipeModel);
         }
-    }
+	}
 }

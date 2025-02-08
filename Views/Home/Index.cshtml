@@ -20,7 +20,10 @@
     }   
 }
 
-
+    <header>
+        <h1 style="text-align : center">RecipeFinder</h1>
+    </header>
+    <a asp-action="Index" asp-controller="Note">Note</a>
     <div class="form-container">
 
         <form asp-action="FilterRecipes" method="post">
@@ -104,8 +107,8 @@
                 <div class="input-container">
                     <label for="Ascending">Ascending</label> <br />
                     <select style="width : 101%;" asp-for="RecipeDTO.Asc">
-                        <option value="@true" selected> True </option>
-                        <option value="@false"> False </option>
+                        <option value="@true" > True </option>
+                        <option value="@false" selected> False </option>
                     </select>
 
                 </div>
@@ -114,10 +117,12 @@
             <button type="submit">Submit</button>
         </form>
         
-    </div>
+    </div> <br /><br />
     @if (Model.Recipes.Any()){
-        
+     
     <div class="result">
+        <h2>Results : </h2>
+        <h4>There is @Model.Recipes.Count Recipes available</h4><br /><br />
         <table>   
             <thead>
                 <tr>

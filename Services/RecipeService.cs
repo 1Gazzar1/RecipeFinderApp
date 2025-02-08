@@ -49,12 +49,12 @@
 
 			// Filter
 			var filter_builder = Builders<Recipe>.Filter;
-            
+
             var filter =
                             filter_builder.Regex(r => r.Name, new BsonRegularExpression(name, "i")) &
                             filter_builder.Lte(r => r.Calories, calories) &
                             filter_builder.Lte(r => r.Cookingtime, cooking_time) &
-                            filter_builder.Regex(r => r.Category, new BsonRegularExpression(category, "i"));
+                            filter_builder.Eq(r => r.Category, category);
             // if there is no ingredients input ignore filtering the ingredients
             if (ingredients.Count > 0)
             {
