@@ -64,12 +64,14 @@ namespace RecipeFinderApp.Controllers
 			return NoContent();
 		}
 		*/
-		[HttpPost("Filter&Sort")]
+		[HttpPost]
+		[Route("Filter&Sort")]
 		public async Task<IActionResult> FilterRecipes(CombinedRecipeModel ViewModel)
 		{
-			var recipes = await _recipeService.Filter(ViewModel.RecipeDTO.Name,
-										ViewModel.RecipeDTO.Ingredients,
-										ViewModel.RecipeDTO.Category,
+			ViewModel.RecipeDTO = ViewModel.RecipeDTO ?? new RecipeDTO();
+			var recipes = await _recipeService.Filter(ViewModel.RecipeDTO.Name!,
+										ViewModel.RecipeDTO.Ingredients!,
+										ViewModel.RecipeDTO.Category!,
 										ViewModel.RecipeDTO.Calories,
 										ViewModel.RecipeDTO.Cookingtime,
 										ViewModel.RecipeDTO.SortBy,
@@ -78,7 +80,8 @@ namespace RecipeFinderApp.Controllers
 
 			return View("Index", ViewModel);
 		}
-		[HttpPost("Ingredient")]
+		[HttpPost]
+		[Route("Ingredient")]
 		public  IActionResult AddIngredients(CombinedRecipeModel ViewModel)
 		{
 			if (ViewModel.RecipeDTO is null || ViewModel.RecipeDTO.Ingredients is null)
@@ -87,18 +90,24 @@ namespace RecipeFinderApp.Controllers
 				ViewModel.RecipeDTO.Ingredients = [];
 			}
 			var ing = ViewModel.Ingredient ?? "";
-			ViewModel.RecipeDTO.Ingredients.Add(ing);
+			if(ing.Length > 0) {
+				ViewModel.RecipeDTO.Ingredients.Add(ing);
+			}
+			
 			
 			return View("Index", ViewModel);
 			
 		}
-		public IActionResult DeleteIngredients(CombinedRecipeModel ViewModel)
+		[HttpPost]
+		[Route("Ingredient/{ing}")]
+		public IActionResult DeleteIngredient(CombinedRecipeModel ViewModel,string ing)
 		{
 			if (ViewModel.RecipeDTO is null || ViewModel.RecipeDTO.Ingredients is null)
 			{
 				ViewModel.RecipeDTO = new RecipeDTO();
 				ViewModel.RecipeDTO.Ingredients = [];
 			}
+			ViewModel.RecipeDTO.Ingredients.Remove(ing);
 
 			return View("Index",ViewModel);
 		}

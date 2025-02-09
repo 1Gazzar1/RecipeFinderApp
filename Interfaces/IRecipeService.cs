@@ -10,6 +10,5 @@
 		Task<List<Recipe>> Filter(string name, List<string> ingredients,
 			string category, double calories, int cooking_time,
 			RecipeSortingOptions sortBy = RecipeSortingOptions.Name, bool asc = true);
-		Task<string> EncodeBase64toByte(string ImgBase64);
 	}
 }

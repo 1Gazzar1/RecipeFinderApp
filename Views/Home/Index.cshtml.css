@@ -10,6 +10,8 @@
     border-radius: 50px 0px;
     text-align: center;
     color: white;
+    width: 70%;
+    margin: auto;
 }
 .parameters {
     display: flex;
@@ -49,6 +51,10 @@
 }
 .result { 
     text-align : center ;
+}
+.result table {
+    margin: auto;
+    width: 70%;
 }
 .result table td {
     min-width: 100px;

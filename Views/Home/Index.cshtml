@@ -22,14 +22,15 @@
 
     <header>
         <h1 style="text-align : center">RecipeFinder</h1>
+    <a asp-action="Index" asp-controller="Note" style="font-size:20px;display: flex; justify-content: center;"><b>Credits</b></a>
     </header>
-    <a asp-action="Index" asp-controller="Note">Note</a>
+    
     <div class="form-container">
 
         <form asp-action="FilterRecipes" method="post">
             <div >
                 <label>Name</label> <br />
-                <input style="width: 60% ; height : 50px ;border-radius: 15px 0px 15px 0px;" type="text" asp-for="RecipeDTO.Name" placeholder="Recipe Name" />
+                <input style="width: 60% ; height : 50px ;border-radius: 15px 0px 15px 0px;" type="text" asp-for="RecipeDTO!.Name" placeholder="Recipe Name" />
             </div>
             
             <div class="Ingredients-section">
@@ -44,12 +45,20 @@
                 <div class="ingredient-items">
                     <h4 style="text-align : left; margin-left : 7% ; ">Ingredients : </h4>
                     <ol style="display : flex ;flex-direction : row ;justify-content : space-evenly;">
-                        @for (int i = 0; i < Model.RecipeDTO.Ingredients.Count; i++)
-                        {
-                            <li>@Model.RecipeDTO.Ingredients[i]</li>
-                            <input type="hidden" name="RecipeDTO.Ingredients[@i]" value="@Model.RecipeDTO.Ingredients[i]" />
-                            
-                        }
+                        
+                            @for (int i = 0; i < Model.RecipeDTO.Ingredients.Count; i++)
+                            {
+                                <li>
+                                    @Model.RecipeDTO.Ingredients[i] 
+                                    <button style="border : 0px; background-color : transparent;" asp-action="DeleteIngredient" asp-route-ing="@Model.RecipeDTO.Ingredients[i]">
+                                        ❌
+                                    </button>
+                                </li>
+                                <input type="hidden" name="RecipeDTO.Ingredients[@i]" value="@Model.RecipeDTO.Ingredients[i]" />
+                                                           
+                            }
+                        
+                        
                     </ol>
                     
 
@@ -61,7 +70,7 @@
             <div class="parameters">
                 <div class="input-container">
                     <label for="Category">Category</label> <br />
-                    <select style="width : 101%;" asp-for="RecipeDTO.Category">
+                    <select style="width : 101%;" asp-for="RecipeDTO!.Category">
 
                         <option value="" selected> ----- </option>
                         <option value="Breakfast"> Breakfast</option>
@@ -83,19 +92,19 @@
                 
                 <div class ="input-container">
                     <label for="Calories">Calories</label> <br />
-                    <input style="width : 101%;" type="number" asp-for="RecipeDTO.Calories" />
+                    <input style="width : 101%;" type="number" asp-for="RecipeDTO!.Calories" />
 
                 </div>
                 
 
                 <div class="input-container">
                     <label for="Cookingtime">Cookingtime</label> <br />
-                    <input style="width : 101%;" type="number" asp-for="RecipeDTO.Cookingtime" />
+                    <input style="width : 101%;" type="number" asp-for="RecipeDTO!.Cookingtime" />
                 </div>
                 
                 <div class="input-container">
                     <label for="Sort-By">Sort By</label> <br />
-                    <select style="width : 101%;" asp-for="RecipeDTO.SortBy">
+                    <select style="width : 101%;" asp-for="RecipeDTO!.SortBy">
                         <option value="@RecipeSortingOptions.Name" selected> Name </option>
                         <option value="@RecipeSortingOptions.Calories"> Calories </option>
                         <option value="@RecipeSortingOptions.Cookingtime"> Cookingtime </option>
@@ -106,9 +115,9 @@
                 
                 <div class="input-container">
                     <label for="Ascending">Ascending</label> <br />
-                    <select style="width : 101%;" asp-for="RecipeDTO.Asc">
-                        <option value="@true" > True </option>
-                        <option value="@false" selected> False </option>
+                    <select style="width : 101%;" asp-for="RecipeDTO!.Asc">
+                        <option value="true" selected > True </option>
+                        <option value="false"> False </option>
                     </select>
 
                 </div>
@@ -117,7 +126,8 @@
             <button type="submit">Submit</button>
         </form>
         
-    </div> <br /><br />
+    </div> <br />
+<hr style="width : 80%; margin : auto; border: 2px solid black;"><br />
     @if (Model.Recipes.Any()){
      
     <div class="result">
@@ -156,19 +166,22 @@
                         <td class="scrollable">
                             <div>
                                 <ol>
-                                    @foreach (var ingred in @recipe.Ingredients)
+                                    @foreach (var ingred in @recipe.Ingredients!)
                                     {
                                         <li style="margin-left : 5px ;">
-                                            <b>@ingred.Quantity - @ingred.Name</b>
+                                            <b>@ingred!.Quantity - @ingred.Name</b>
                                         </li>
                                     }
                                 </ol>
                             </div>                       
                         </td>
-                        <td><img class = "Photo" loading="lazy" src="@base64img(@recipe.Image)" /></td>
+                        <td><img class = "Photo" loading="lazy" src="@base64img(@recipe.Image!)" /></td>
                     </tr>                 
                 }
             </tbody>           
         </table> 
     </div>
+    }
+    else{
+        <h4 style="text-align : center">No Recipes Available </h4>
     }

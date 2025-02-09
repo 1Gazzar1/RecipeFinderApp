@@ -54,11 +54,11 @@
                             filter_builder.Regex(r => r.Name, new BsonRegularExpression(name, "i")) &
                             filter_builder.Lte(r => r.Calories, calories) &
                             filter_builder.Lte(r => r.Cookingtime, cooking_time) &
-                            filter_builder.Eq(r => r.Category, category);
+                            (category == ""? filter_builder.Empty : filter_builder.Eq(r => r.Category, category)  );
             // if there is no ingredients input ignore filtering the ingredients
             if (ingredients.Count > 0)
             {
-				filter = filter & (filter_builder.ElemMatch(r => r.Ingredients, i => ingredients.Contains(i.Name)));
+				filter = filter & (filter_builder.ElemMatch(r => r.Ingredients, i => ingredients.Contains(i!.Name!)));
 			}
 
             //Sort
@@ -80,8 +80,8 @@
                 // it has something to do with .Count
 
 				var recipes =  await _db.Recipes.Find(filter).ToListAsync();
-                return asc == true ? recipes.OrderBy(r => r.Ingredients.Count).ToList() :
-                                    recipes.OrderByDescending(r => r.Ingredients.Count).ToList();
+                return asc == true ? recipes.OrderBy(r => r.Ingredients!.Count).ToList() :
+                                    recipes.OrderByDescending(r => r.Ingredients!.Count).ToList();
                                        
             }
             // sort by name if nothing else or wrong input (somehow)
@@ -92,10 +92,5 @@
 
 			return await _db.Recipes.Find(filter).Sort(sort).ToListAsync();
         }
-		public async Task<string> EncodeBase64toByte(string ImgBase64)
-        {
-			string imageSrc = $"data:image/jpeg;base64,{ImgBase64}";
-            return imageSrc;
-		}
 	}
 }
